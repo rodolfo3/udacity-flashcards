@@ -20,12 +20,20 @@ const mock = {
 
 
 export function getDecks() {
-  return Object.values(mock);
+  return new Promise(function(resolve) {
+    setTimeout(() => resolve(mock), 1500);
+  })
 }
 
 
 export function getDeck(id) {
-  return mock[id] || null;
+  if (mock[id]) {
+    return new Promise(function(resolve) {
+        setTimeout(() => resolve(mock[id]), 1500);
+    })
+  } else {
+    return Promise.reject();
+  }
 }
 
 
