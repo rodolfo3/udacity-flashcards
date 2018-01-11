@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StatusBar } from 'react-native';
 import { Constants } from 'expo';
 
-import CardList from './components/CardList';
+import DeckList from './components/DeckList';
 
 
 const AppStatusBar = ({ backgroundColor, ...props }) => (
@@ -17,7 +17,7 @@ export default class App extends React.Component {
     return (
       <View style={{flex: 1}}>
         <AppStatusBar backgroundColor="white" />
-        <CardList />
+        <DeckList />
       </View>
     );
   }
