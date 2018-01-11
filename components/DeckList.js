@@ -4,17 +4,24 @@ import { StyleSheet, Text, View } from 'react-native';
 import { getDecks } from '../utils/db';
 
 
-class DeckList extends Component {
-  render() {
-    const { decks } = this.props;
-    return (
-      <View>
-        <Text>Deck List</Text>
-        <Text>{ JSON.stringify(decks, null, '  ') }</Text>
-      </View>
-    );
-  }
-}
+const Deck = ({ deck }) => (
+  <View>
+    <Text>{ deck.title }</Text>
+    <Text>{ deck.questions.length } questions</Text>
+  </View>
+);
+
+
+const DeckList = ({ decks }) => (
+  <View>
+    <Text>Deck List</Text>
+    {
+      decks.map(
+        deck => <Deck key={deck.id} deck={deck} />
+      )
+    }
+  </View>
+);
 
 
 class DeckListContainer extends Component {
@@ -28,7 +35,7 @@ class DeckListContainer extends Component {
 
   render() {
     if (this.state.decks) {
-      return <DeckList decks={this.state.decks} />
+      return <DeckList decks={Object.values(this.state.decks)} />
     } else {
       return (
         <Text>Loading...</Text>
