@@ -76,9 +76,7 @@ export function getDecks() {
 
 export function getDeck(id) {
   if (mock[id]) {
-    return new Promise(function(resolve) {
-        setTimeout(() => resolve(mock[id]), 1500);
-    })
+    return Promise.resolve(mock[id]);
   } else {
     return Promise.reject();
   }
