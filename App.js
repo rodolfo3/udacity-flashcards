@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StatusBar } from 'react-native';
-import { StackNavigator } from 'react-navigation'
+import { TabNavigator, StackNavigator } from 'react-navigation'
 import { Constants } from 'expo';
 
 import DeckList from './components/DeckList';
@@ -13,12 +13,21 @@ const AppStatusBar = ({ backgroundColor, ...props }) => (
 );
 
 
-const MainNavigation = StackNavigator({
+const DeckNavigation = TabNavigator({
   DeckList: {
     screen: DeckList,
     navigationOptions: {
+      tabBarLabel: 'Decks',
+    }
+  },
+});
+
+const MainNavigation = StackNavigator({
+  Home: {
+    screen: DeckNavigation,
+    navigationOptions: {
       header: null,
-    },
+    }
   },
 })
 
