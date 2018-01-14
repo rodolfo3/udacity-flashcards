@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TextInput, View, KeyboardAvoidingView, TouchableHighlight } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 
 import { getDeck } from '../utils/db';
 
@@ -29,6 +30,18 @@ class DeckDetailsContainer extends Component {
   }
 
   startQuiz = () => {
+    const { deck } = this.state;
+    return this.props.navigation.dispatch(
+      NavigationActions.navigate({
+        routeName: 'Quiz',
+        params: {
+          deck: {
+            id: deck.id,
+            title: deck.title,
+          }
+        },
+      })
+    )
   }
 
   componentDidMount() {
