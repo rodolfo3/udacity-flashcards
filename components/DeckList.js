@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableHighlight } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 
 import { getDecks } from '../utils/db';
 
@@ -27,8 +28,8 @@ const style = StyleSheet.create({
 });
 
 
-const Deck = ({ deck }) => (
-  <TouchableHighlight style={style.card} onPress={() => console.log("Deck!")}>
+const Deck = ({ deck, onPress }) => (
+  <TouchableHighlight style={style.card} onPress={onPress}>
     <View>
       <Text style={style.title}>{ deck.title }</Text>
       <Text style={style.counter}>{ deck.questions.length } questions</Text>
@@ -37,7 +38,7 @@ const Deck = ({ deck }) => (
 );
 
 
-const DeckList = ({ decks, reload }) => (
+const DeckList = ({ decks, reload, goToDeck }) => (
   <ScrollView style={style.list}>
     <TouchableHighlight onPress={reload}>
       <Text>
@@ -46,7 +47,7 @@ const DeckList = ({ decks, reload }) => (
     </TouchableHighlight>
     {
       decks.map(
-        deck => <Deck key={deck.id} deck={deck} />
+        deck => <Deck key={deck.id} deck={deck} onPress={() => goToDeck(deck)} />
       )
     }
   </ScrollView>
@@ -66,9 +67,23 @@ class DeckListContainer extends Component {
     getDecks().then(decks => this.setState({ decks }));
   }
 
+  goToDeck = (deck) => {
+    return this.props.navigation.dispatch(
+      NavigationActions.navigate({
+        routeName: 'DeckDetail',
+        params: {
+          deck: {
+            id: deck.id,
+            title: deck.title,
+          }
+        },
+      })
+    )
+  }
+
   render() {
     if (this.state.decks) {
-      return <DeckList decks={Object.values(this.state.decks)} reload={this.reload} />
+      return <DeckList decks={Object.values(this.state.decks)} reload={this.reload} goToDeck={this.goToDeck} />
     } else {
       return (
         <Text>Loading...</Text>

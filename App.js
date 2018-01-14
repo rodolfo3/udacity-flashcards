@@ -5,6 +5,7 @@ import { Constants } from 'expo';
 
 import DeckList from './components/DeckList';
 import EditDeck from './components/EditDeck';
+import DeckDetails from './components/DeckDetails';
 
 
 const AppStatusBar = ({ backgroundColor, ...props }) => (
@@ -35,6 +36,9 @@ const MainNavigation = StackNavigator({
     navigationOptions: {
       header: null,
     }
+  },
+  DeckDetail: {
+    screen: DeckDetails,
   },
 })
 
