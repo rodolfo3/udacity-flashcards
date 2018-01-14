@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StatusBar } from 'react-native';
+import { StackNavigator } from 'react-navigation'
 import { Constants } from 'expo';
 
 import DeckList from './components/DeckList';
@@ -12,12 +13,22 @@ const AppStatusBar = ({ backgroundColor, ...props }) => (
 );
 
 
+const MainNavigation = StackNavigator({
+  DeckList: {
+    screen: DeckList,
+    navigationOptions: {
+      header: null,
+    },
+  },
+})
+
+
 export default class App extends React.Component {
   render() {
     return (
       <View style={{flex: 1}}>
         <AppStatusBar backgroundColor="white" />
-        <DeckList />
+        <MainNavigation />
       </View>
     );
   }
