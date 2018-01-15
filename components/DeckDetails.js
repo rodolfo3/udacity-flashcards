@@ -27,6 +27,18 @@ class DeckDetailsContainer extends Component {
   getId = () => this.props.navigation.state.params.deck.id;
 
   addCard = () => {
+    const { deck } = this.state;
+    return this.props.navigation.dispatch(
+      NavigationActions.navigate({
+        routeName: 'AddQuestion',
+        params: {
+          deck: {
+            id: deck.id,
+            title: deck.title,
+          }
+        },
+      })
+    )
   }
 
   startQuiz = () => {

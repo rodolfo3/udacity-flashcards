@@ -7,6 +7,7 @@ import DeckList from './components/DeckList';
 import EditDeck from './components/EditDeck';
 import DeckDetails from './components/DeckDetails';
 import Question from './components/Question';
+import EditQuestion from './components/EditQuestion';
 
 
 const AppStatusBar = ({ backgroundColor, ...props }) => (
@@ -40,6 +41,9 @@ const MainNavigation = StackNavigator({
   },
   DeckDetail: {
     screen: DeckDetails,
+  },
+  AddQuestion: {
+    screen: EditQuestion,
   },
   Quiz: {
     screen: Question,

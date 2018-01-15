@@ -100,14 +100,15 @@ export function saveDeck({ title }) {
 
 
 export function addCardToDeck(deckId, { question, answer }) {
-  const deck = getDeck(deckId);
-  if (!deck) throw new Error('Deck not found');
+  return getDeck(deckId).then(deck => {
+    if (!deck) throw new Error('Deck not found');
 
-  const card = {
-    id: String(Math.random()),
-    question,
-    answer,
-  }
-  deck.questions.append(card);
-  return card;
+    const card = {
+      id: String(Math.random()),
+      question,
+      answer,
+    }
+    deck.questions.push(card);
+    return card;
+  })
 }
