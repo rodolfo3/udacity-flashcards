@@ -78,6 +78,10 @@ const EditQuestion = ({ changeQuestion, changeAnswer, save }) => (
 
 
 class EditQuestionContainer extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    title: `New card on "${navigation.state.params.deck.title}"`,
+  });
+
   state = {
     question: "",
     answer: "",

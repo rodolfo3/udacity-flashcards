@@ -71,6 +71,10 @@ const EditDeck = ({ changeTitle, save }) => (
 
 
 class EditDeckContainer extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    title: `Add Deck`,
+  });
+
   state = {
     title: "",
     saving: false,

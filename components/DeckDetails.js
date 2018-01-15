@@ -22,6 +22,10 @@ const DeckDetails = ({ deck, addCard, startQuiz }) => (
 
 
 class DeckDetailsContainer extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    title: `Deck ${navigation.state.params.deck.title}`,
+  });
+
   addCard = () => {
     const { deck } = this.props;
     return this.props.navigation.dispatch(
