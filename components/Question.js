@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, TextInput, View, KeyboardAvoidingView, TouchableHighlight } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
-import { getDeck } from '../utils/db';
+import { connect } from 'react-redux';
 
 
 const Ended = ({ incorrect, correct, continue_ }) => (
@@ -53,15 +53,11 @@ const shuffle = (arr) => [...arr]; // TODO
 
 class QuestionContainer extends Component {
   state = {
-    deck: null,
-    questions: null,
     questionIndex: 0,
 
     correctCounter: 0,
     incorrectCounter: 0,
   }
-
-  getId = () => this.props.navigation.state.params.deck.id;
 
   next = () => {
     this.setState(state => ({ questionIndex: state.questionIndex + 1 }));
@@ -86,19 +82,10 @@ class QuestionContainer extends Component {
     )
   }
 
-  componentDidMount() {
-    getDeck(this.getId())
-      .then(deck => this.setState({
-        deck,
-        questions: shuffle(deck.questions),
-        questionIndex: 0,
-      }))
-      .catch(err => console.error(err));
-  }
-
   render() {
-    const { deck, questions, questionIndex } = this.state;
-    if (!deck || deck.id != this.getId()) {
+    const { questions, deck } = this.props;
+    const { questionIndex } = this.state;
+    if (!deck) {
       return <Text>Loading...</Text>;
     }
 
@@ -125,4 +112,14 @@ class QuestionContainer extends Component {
 }
 
 
-export default QuestionContainer;
+function mapStateToProps(state, props) {
+  const deckId = props.navigation.state.params.deck.id;
+  const deck = state.decks[deckId];
+  return {
+    ...props,
+    deck: deck,
+    questions: deck && shuffle(deck.questions),
+  }
+}
+
+export default connect(mapStateToProps)(QuestionContainer);
