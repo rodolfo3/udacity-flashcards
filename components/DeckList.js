@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableHighlight } from 'react-native';
 import { NavigationActions } from 'react-navigation';
+import { connect } from 'react-redux'
 
-import { getDecks } from '../utils/db';
+import { loadDecks } from '../actions';
 
 
 const style = StyleSheet.create({
@@ -64,7 +65,8 @@ class DeckListContainer extends Component {
   }
 
   reload = () => {
-    getDecks().then(decks => this.setState({ decks }));
+    console.log(loadDecks());
+    this.props.dispatch(loadDecks());
   }
 
   goToDeck = (deck) => {
@@ -82,8 +84,8 @@ class DeckListContainer extends Component {
   }
 
   render() {
-    if (this.state.decks) {
-      return <DeckList decks={Object.values(this.state.decks)} reload={this.reload} goToDeck={this.goToDeck} />
+    if (this.props.decks) {
+      return <DeckList decks={Object.values(this.props.decks)} reload={this.reload} goToDeck={this.goToDeck} />
     } else {
       return (
         <Text>Loading...</Text>
@@ -92,4 +94,13 @@ class DeckListContainer extends Component {
   }
 }
 
-export default DeckListContainer;
+
+function mapStateToProps(state) {
+  console.log('mapStateToProps', state);
+  return {
+    decks: state.decks,
+  }
+}
+
+
+export default connect(mapStateToProps)(DeckListContainer);

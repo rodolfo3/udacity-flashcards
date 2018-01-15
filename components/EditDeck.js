@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, TextInput, View, KeyboardAvoidingView, TouchableHighlight } from 'react-native';
 import { NavigationActions } from 'react-navigation'
 
-import { saveDeck } from '../utils/db';
+import { connect } from 'react-redux'
+
+import { addDeck } from '../actions';
 
 
 const style = StyleSheet.create({
@@ -80,13 +82,15 @@ class EditDeckContainer extends Component {
 
   save = () => {
     this.setState({ saving: true });
-    saveDeck({ title: this.state.title }).then(() => {
+    const act = this.props.dispatch(addDeck({ title: this.state.title }))
+    console.log('ACT', act);
+    act.then(() => {
       this.back();
       this.setState({
         saving: false,
         title: "",
       });
-    })
+    });
   }
 
   render() {
@@ -104,4 +108,4 @@ class EditDeckContainer extends Component {
 }
 
 
-export default EditDeckContainer;
+export default connect(() => ({}))(EditDeckContainer);

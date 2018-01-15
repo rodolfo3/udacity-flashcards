@@ -3,6 +3,9 @@ import { View, StatusBar } from 'react-native';
 import { TabNavigator, StackNavigator } from 'react-navigation'
 import { Constants } from 'expo';
 
+import { Provider } from 'react-redux';
+import store from './store';
+
 import DeckList from './components/DeckList';
 import EditDeck from './components/EditDeck';
 import DeckDetails from './components/DeckDetails';
@@ -54,10 +57,12 @@ const MainNavigation = StackNavigator({
 export default class App extends React.Component {
   render() {
     return (
-      <View style={{flex: 1}}>
-        <AppStatusBar backgroundColor="white" />
-        <MainNavigation />
-      </View>
+      <Provider store={store}>
+        <View style={{flex: 1}}>
+          <AppStatusBar backgroundColor="white" />
+          <MainNavigation />
+        </View>
+      </Provider>
     );
   }
 }
