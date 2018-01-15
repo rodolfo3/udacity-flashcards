@@ -65,7 +65,6 @@ class DeckListContainer extends Component {
   }
 
   reload = () => {
-    console.log(loadDecks());
     this.props.dispatch(loadDecks());
   }
 
@@ -96,7 +95,6 @@ class DeckListContainer extends Component {
 
 
 function mapStateToProps(state) {
-  console.log('mapStateToProps', state);
   return {
     decks: state.decks,
   }

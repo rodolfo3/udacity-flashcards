@@ -83,7 +83,6 @@ class EditDeckContainer extends Component {
   save = () => {
     this.setState({ saving: true });
     const act = this.props.dispatch(addDeck({ title: this.state.title }))
-    console.log('ACT', act);
     act.then(() => {
       this.back();
       this.setState({

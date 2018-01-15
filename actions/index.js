@@ -1,5 +1,6 @@
 export const RECEIVE_DECKS = 'RECEIVE_DECK';
 export const ADD_DECK = 'ADD_DECK';
+export const ADD_CARD = 'ADD_CARD';
 
 
 const mock = {
@@ -65,6 +66,25 @@ export function addDeck({ title }) {
       dispatch({
         type: ADD_DECK,
         deck,
+      })
+    );
+  }
+}
+
+
+export function addCard({ deckId, question, answer }) {
+  return (dispatch) => {
+    const card = {
+      id: generateId(),
+      question,
+      answer,
+    };
+
+    return Promise.resolve(
+      dispatch({
+        type: ADD_CARD,
+        deckId,
+        card,
       })
     );
   }

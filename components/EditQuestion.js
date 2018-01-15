@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, TextInput, View, KeyboardAvoidingView, TouchableHighlight } from 'react-native';
 import { NavigationActions } from 'react-navigation'
 
-import { addCardToDeck } from '../utils/db';
+import { connect } from 'react-redux'
+
+import { addCard } from '../actions';
 
 
 const style = StyleSheet.create({
@@ -90,7 +92,12 @@ class EditQuestionContainer extends Component {
 
   save = () => {
     this.setState({ saving: true });
-    addCardToDeck(this.getId(), { question: this.state.question, answer: this.state.answer }).then(() => {
+    const act = this.props.dispatch(addCard({
+      deckId: this.getId(),
+      question: this.state.question,
+      answer: this.state.answer,
+    }))
+    act.then(() => {
       this.back();
       this.setState({
         saving: false,
@@ -116,4 +123,10 @@ class EditQuestionContainer extends Component {
 }
 
 
-export default EditQuestionContainer;
+function mapStateToProps(state) {
+  return {
+  };
+}
+
+
+export default connect(mapStateToProps)(EditQuestionContainer);
