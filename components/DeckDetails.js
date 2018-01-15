@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, TextInput, View, KeyboardAvoidingView, TouchableHighlight } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
+import { connect } from 'react-redux';
+
 import { getDeck } from '../utils/db';
 
 
@@ -20,14 +22,8 @@ const DeckDetails = ({ deck, addCard, startQuiz }) => (
 
 
 class DeckDetailsContainer extends Component {
-  state = {
-    deck: null,
-  }
-
-  getId = () => this.props.navigation.state.params.deck.id;
-
   addCard = () => {
-    const { deck } = this.state;
+    const { deck } = this.props;
     return this.props.navigation.dispatch(
       NavigationActions.navigate({
         routeName: 'AddQuestion',
@@ -42,7 +38,7 @@ class DeckDetailsContainer extends Component {
   }
 
   startQuiz = () => {
-    const { deck } = this.state;
+    const { deck } = this.props;
     return this.props.navigation.dispatch(
       NavigationActions.navigate({
         routeName: 'Quiz',
@@ -56,15 +52,9 @@ class DeckDetailsContainer extends Component {
     )
   }
 
-  componentDidMount() {
-    getDeck(this.getId())
-      .then(deck => this.setState({ deck }))
-      .catch(err => console.error(err));
-  }
-
   render() {
-    const { deck } = this.state;
-    if (deck && deck.id == this.getId()) {
+    const { deck } = this.props;
+    if (deck) {
       return <DeckDetails deck={deck} addCard={this.addCard} startQuiz={this.startQuiz} />;
     }
     return <Text>Loading...</Text>;
@@ -72,4 +62,13 @@ class DeckDetailsContainer extends Component {
 }
 
 
-export default DeckDetailsContainer;
+function mapStateToProps(state, props) {
+  const deckId = props.navigation.state.params.deck.id;
+  return {
+    ...props,
+    deck: state.decks[deckId],
+  }
+}
+
+
+export default connect(mapStateToProps)(DeckDetailsContainer);
