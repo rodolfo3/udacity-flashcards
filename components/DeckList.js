@@ -41,11 +41,6 @@ const Deck = ({ deck, onPress }) => (
 
 const DeckList = ({ decks, reload, goToDeck }) => (
   <ScrollView style={style.list}>
-    <TouchableHighlight onPress={reload}>
-      <Text>
-        Reload
-      </Text>
-    </TouchableHighlight>
     {
       decks.map(
         deck => <Deck key={deck.id} deck={deck} onPress={() => goToDeck(deck)} />
