@@ -7,15 +7,52 @@ import { connect } from 'react-redux';
 import { getDeck } from '../utils/db';
 
 
+const btn = {
+  borderRadius: 4,
+  margin: 20,
+}
+
+
+const style = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button: {
+    ...btn,
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderColor: "black",
+  },
+  secondaryButton: {
+    ...btn,
+    backgroundColor: "transparent",
+    borderWidth: 1,
+    borderColor: "black",
+    alignSelf: "flex-end",
+  },
+  buttonText: {
+    paddingTop: 10,
+    paddingRight: 20,
+    paddingBottom: 10,
+    paddingLeft: 20,
+
+    color: "black",
+  }
+});
+
+
 const DeckDetails = ({ deck, addCard, startQuiz }) => (
-  <View>
-    <Text>{ deck.title }</Text>
-    <Text>{ deck.questions.length } questions</Text>
-    <TouchableHighlight onPress={addCard} style={{borderWidth: 1}}>
-      <Text>{"\n\n"}Add Card{"\n\n"}</Text>
-    </TouchableHighlight>
-    <TouchableHighlight onPress={startQuiz} style={{borderWidth: 1}}>
-      <Text>{"\n\n"}Start Quiz{"\n\n"}</Text>
+  <View style={style.wrapper}>
+    <View style={[style.wrapper, {minWidth: 175}]}>
+      <Text>{ deck.questions.length } questions</Text>
+      <TouchableHighlight onPress={startQuiz} style={style.button}>
+        <Text style={style.buttonText}>Start Quiz</Text>
+      </TouchableHighlight>
+    </View>
+    <TouchableHighlight onPress={addCard} style={style.secondaryButton}>
+      <Text style={style.buttonText}>Add Card</Text>
     </TouchableHighlight>
   </View>
 );
