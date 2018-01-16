@@ -80,8 +80,16 @@ class DeckListContainer extends Component {
   }
 
   render() {
-    if (this.props.decks) {
-      return <DeckList decks={Object.values(this.props.decks)} reload={this.reload} goToDeck={this.goToDeck} />
+    const { decks } = this.props;
+
+    if (decks) {
+      if (Object.keys(decks).length > 0) {
+        return <DeckList decks={Object.values(decks)} reload={this.reload} goToDeck={this.goToDeck} />
+      } else {
+        return (
+          <Text>No decks found. Add your first!</Text>
+        );
+      }
     } else {
       return (
         <Text>Loading...</Text>
