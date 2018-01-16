@@ -30,6 +30,5 @@ export function load() {
 }
 
 export function save(data) {
-  console.log('save', data);
   return AsyncStorage.setItem(DATA_KEY, JSON.stringify(data));
 }

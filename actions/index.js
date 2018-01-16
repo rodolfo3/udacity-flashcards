@@ -14,7 +14,6 @@ function generateId() {
 export function loadDecks() {
   return (dispatch) => {
     load().then(({ decks }) => {
-      console.log('decks', decks);
       return dispatch({
         type: RECEIVE_DECKS,
         decks,
