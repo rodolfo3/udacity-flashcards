@@ -4,6 +4,8 @@ import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import Ended from './Ended';
 
+import { updateLocalNotification } from '../../utils/helpers';
+
 
 const btn = {
   paddingTop: 10,
@@ -126,6 +128,7 @@ class QuestionContainer extends Component {
   }
 
   goHome = () => {
+    updateLocalNotification();
     return this.props.navigation.dispatch(
       NavigationActions.navigate({
         routeName: 'Home',

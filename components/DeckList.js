@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, ScrollView, TouchableHighlight } from 'react-na
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux'
 
+import { setLocalNotification } from '../utils/helpers';
 import { loadDecks } from '../actions';
 
 
@@ -57,6 +58,7 @@ class DeckListContainer extends Component {
 
   componentDidMount() {
     this.reload();
+    setLocalNotification();
   }
 
   reload = () => {
