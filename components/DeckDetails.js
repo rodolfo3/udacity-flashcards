@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TextInput, View, KeyboardAvoidingView, TouchableHighlight } from 'react-native';
+import { Alert, StyleSheet, Text, TextInput, View, KeyboardAvoidingView, TouchableHighlight } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
 import { connect } from 'react-redux';
 
-import { getDeck } from '../utils/db';
+import { removeDeck } from '../actions';
 
 
 const btn = {
@@ -25,12 +25,20 @@ const style = StyleSheet.create({
     borderWidth: 1,
     borderColor: "black",
   },
+  secondaryActions: {
+    alignSelf: "flex-end",
+  },
   secondaryButton: {
     ...btn,
     backgroundColor: "transparent",
     borderWidth: 1,
     borderColor: "black",
-    alignSelf: "flex-end",
+  },
+  warningButton: {
+    ...btn,
+    backgroundColor: "red",
+    borderWidth: 1,
+    borderColor: "white",
   },
   buttonText: {
     paddingTop: 10,
@@ -43,7 +51,7 @@ const style = StyleSheet.create({
 });
 
 
-const DeckDetails = ({ deck, addCard, startQuiz }) => (
+const DeckDetails = ({ deck, addCard, deleteDeck, startQuiz }) => (
   <View style={style.wrapper}>
     <View style={[style.wrapper, {minWidth: 175}]}>
       <Text>{ deck.questions.length } questions</Text>
@@ -51,9 +59,14 @@ const DeckDetails = ({ deck, addCard, startQuiz }) => (
         <Text style={style.buttonText}>Start Quiz</Text>
       </TouchableHighlight>
     </View>
-    <TouchableHighlight onPress={addCard} style={style.secondaryButton}>
-      <Text style={style.buttonText}>Add Card</Text>
-    </TouchableHighlight>
+    <View style={style.secondaryActions}>
+      <TouchableHighlight onPress={deleteDeck} style={style.warningButton}>
+        <Text style={style.buttonText}>Delete Deck!</Text>
+      </TouchableHighlight>
+      <TouchableHighlight onPress={addCard} style={style.secondaryButton}>
+        <Text style={style.buttonText}>Add Card</Text>
+      </TouchableHighlight>
+    </View>
   </View>
 );
 
@@ -62,6 +75,10 @@ class DeckDetailsContainer extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: `Deck ${navigation.state.params.deck.title}`,
   });
+
+  back = () => {
+    return this.props.navigation.dispatch(NavigationActions.back())
+  }
 
   addCard = () => {
     const { deck } = this.props;
@@ -75,6 +92,25 @@ class DeckDetailsContainer extends Component {
           }
         },
       })
+    )
+  }
+
+  _deleteDeck = () => {
+    const { deck } = this.props;
+    const act = this.props.dispatch(removeDeck({ id: deck.id }))
+    return act.then(() => this.back());
+  }
+
+  deleteDeck = () => {
+    const { deck } = this.props;
+    Alert.alert(
+      'Are you sure?',
+      `This will remove ${deck.title} forever...`,
+      [
+        {text: 'Yes, delete it', onPress: () => this._deleteDeck()},
+        {text: 'No, keep it', style: 'cancel'},
+      ],
+      { cancelable: true }
     )
   }
 
@@ -96,7 +132,7 @@ class DeckDetailsContainer extends Component {
   render() {
     const { deck } = this.props;
     if (deck) {
-      return <DeckDetails deck={deck} addCard={this.addCard} startQuiz={this.startQuiz} />;
+      return <DeckDetails deck={deck} addCard={this.addCard} deleteDeck={this.deleteDeck} startQuiz={this.startQuiz} />;
     }
     return <Text>Loading...</Text>;
   }

@@ -1,4 +1,4 @@
-import { ADD_CARD, ADD_DECK, RECEIVE_DECKS } from '../actions';
+import { ADD_CARD, ADD_DECK, RECEIVE_DECKS, REMOVE_DECK } from '../actions';
 
 
 function decks(state = null, action) {
@@ -11,6 +11,20 @@ function decks(state = null, action) {
         ...(state || {}),
         [action.deck.id]: action.deck,
       };
+
+    case REMOVE_DECK:
+      return Object.keys(state || {}).reduce(
+        (acc, idx) => {
+          if (idx == action.deck.id) {
+            return acc;
+          }
+          return {
+            ...acc,
+            [idx]: state[idx],
+          }
+        },
+        {}
+      );
 
     case ADD_CARD:
       const deck = state[action.deckId];

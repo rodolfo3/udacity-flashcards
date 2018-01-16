@@ -1,5 +1,6 @@
 export const RECEIVE_DECKS = 'RECEIVE_DECK';
 export const ADD_DECK = 'ADD_DECK';
+export const REMOVE_DECK = 'REMOVE_DECK';
 export const ADD_CARD = 'ADD_CARD';
 
 import { save, load } from '../utils/db';
@@ -35,6 +36,20 @@ export function addDeck({ title }) {
       type: ADD_DECK,
       deck,
     });
+    return save(getState());
+  }
+}
+
+
+export function removeDeck({ id }) {
+  return (dispatch, getState) => {
+    const deck = getState().decks[id];
+
+    const action = dispatch({
+      type: REMOVE_DECK,
+      deck,
+    });
+
     return save(getState());
   }
 }
