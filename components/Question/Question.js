@@ -2,21 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, TextInput, View, KeyboardAvoidingView, TouchableHighlight } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
-
-
-const Ended = ({ incorrect, correct, continue_ }) => (
-  <View>
-    <Text>That's it</Text>
-    <Text>Correct: { correct }/{ incorrect + correct }</Text>
-    <TouchableHighlight onPress={continue_}>
-      <Text>
-        {"\n"}
-        Continue
-        {"\n\n"}
-      </Text>
-    </TouchableHighlight>
-  </View>
-);
+import Ended from './Ended';
 
 
 const btn = {
