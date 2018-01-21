@@ -83,8 +83,8 @@ class DeckListContainer extends Component {
     const { decks } = this.props;
 
     if (decks) {
-      if (Object.keys(decks).length > 0) {
-        return <DeckList decks={Object.values(decks)} reload={this.reload} goToDeck={this.goToDeck} />
+      if (decks.length > 0) {
+        return <DeckList decks={decks} reload={this.reload} goToDeck={this.goToDeck} />
       } else {
         return (
           <Text>No decks found. Add your first!</Text>
@@ -101,7 +101,7 @@ class DeckListContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    decks: state.decks,
+    decks: state.decks && Object.values(state.decks),
   }
 }
 
