@@ -26,7 +26,7 @@ const EXAMPLE = {
 
 export function load() {
   return AsyncStorage.getItem(DATA_KEY)
-    .then(JSON.parse);
+    .then(data => data ? JSON.parse(data) : { decks: EXAMPLE });
 }
 
 export function save(data) {
