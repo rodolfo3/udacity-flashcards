@@ -32,6 +32,17 @@ const style = StyleSheet.create({
   input: {
   },
 
+  validationMessage: {
+    alignSelf: 'center',
+    textAlign: 'center',
+    color: 'red',
+
+    marginTop: 20,
+    marginRight: 20,
+    marginBottom: 20,
+    marginLeft: 20,
+  },
+
   saveButtonText: {
     alignSelf: 'center',
     borderRadius: 4,
@@ -51,7 +62,7 @@ const style = StyleSheet.create({
 });
 
 
-const EditDeck = ({ changeTitle, save }) => (
+const EditDeck = ({ changeTitle, save, validationMessage }) => (
     <KeyboardAvoidingView behavior="padding" style={style.wrapper}>
       <Text style={style.description}>
         What is the title of your new deck?
@@ -63,9 +74,12 @@ const EditDeck = ({ changeTitle, save }) => (
           onChangeText={changeTitle}
         />
       </View>
-        <TouchableHighlight style={style.saveButton} onPress={save}>
-          <Text style={style.saveButtonText}>Submit</Text>
-        </TouchableHighlight>
+      <TouchableHighlight onPress={save}>
+        <Text style={style.saveButtonText}>Submit</Text>
+      </TouchableHighlight>
+      <View>
+        <Text style={style.validationMessage}>{ validationMessage }</Text>
+      </View>
     </KeyboardAvoidingView>
 );
 
@@ -78,6 +92,7 @@ class EditDeckContainer extends Component {
   state = {
     title: "",
     saving: false,
+    validationMessage: null,
   }
 
   back = () => {
@@ -85,8 +100,15 @@ class EditDeckContainer extends Component {
   }
 
   save = () => {
+    const { title } = this.state;
+
+    if (!title || title.trim() === '') {
+      this.setState({ validationMessage: 'Title is required!' });
+      return;
+    }
+
     this.setState({ saving: true });
-    const act = this.props.dispatch(addDeck({ title: this.state.title }))
+    const act = this.props.dispatch(addDeck({ title }))
     act.then(() => {
       this.back();
       this.setState({
@@ -96,6 +118,10 @@ class EditDeckContainer extends Component {
     });
   }
 
+  updateData = (data) => {
+    this.setState({ ...data, validationMessage: null });
+  };
+
   render() {
     if (this.state.saving) {
       return <Text>Saving...</Text>;
@@ -103,8 +129,9 @@ class EditDeckContainer extends Component {
 
     return (
       <EditDeck
-        changeTitle={title => this.setState({ title })}
+        changeTitle={title => this.updateData({ title })}
         save={this.save}
+        validationMessage={this.state.validationMessage}
       />
     );
   }

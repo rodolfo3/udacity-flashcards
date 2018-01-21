@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TextInput, View, KeyboardAvoidingView, TouchableHighlight } from 'react-native';
-import { NavigationActions } from 'react-navigation'
+import { NavigationActions } from 'react-navigation';
 
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 
 import { addCard } from '../actions';
 
@@ -32,6 +32,17 @@ const style = StyleSheet.create({
   input: {
   },
 
+  validationMessage: {
+    alignSelf: 'center',
+    textAlign: 'center',
+    color: 'red',
+
+    marginTop: 20,
+    marginRight: 20,
+    marginBottom: 20,
+    marginLeft: 20,
+  },
+
   saveButtonText: {
     alignSelf: 'center',
     borderRadius: 4,
@@ -51,7 +62,7 @@ const style = StyleSheet.create({
 });
 
 
-const EditQuestion = ({ changeQuestion, changeAnswer, save }) => (
+const EditQuestion = ({ changeQuestion, changeAnswer, save, validationMessage = null }) => (
     <KeyboardAvoidingView behavior="padding" style={style.wrapper}>
 
       <View style={[style._margin, style.inputWrapper]}>
@@ -73,6 +84,10 @@ const EditQuestion = ({ changeQuestion, changeAnswer, save }) => (
       <TouchableHighlight style={style.saveButton} onPress={save}>
         <Text style={style.saveButtonText}>Submit</Text>
       </TouchableHighlight>
+
+      <View>
+        <Text style={style.validationMessage}>{ validationMessage }</Text>
+      </View>
     </KeyboardAvoidingView>
 );
 
@@ -86,6 +101,7 @@ class EditQuestionContainer extends Component {
     question: "",
     answer: "",
     saving: false,
+    validationMessage: null,
   }
 
   getId = () => this.props.navigation.state.params.deck.id;
@@ -95,6 +111,17 @@ class EditQuestionContainer extends Component {
   }
 
   save = () => {
+    const { question, answer } = this.state;
+    if (!question || question.trim() === '') {
+      this.setState({ validationMessage: 'Question is required!' });
+      return;
+    }
+
+    if (!answer || answer.trim() === '') {
+      this.setState({ validationMessage: 'Answer is required!' });
+      return;
+    }
+
     this.setState({ saving: true });
     const act = this.props.dispatch(addCard({
       deckId: this.getId(),
@@ -111,6 +138,10 @@ class EditQuestionContainer extends Component {
     })
   }
 
+  updateData = (data) => {
+    this.setState({ ...data, validationMessage: null });
+  };
+
   render() {
     if (this.state.saving) {
       return <Text>Saving...</Text>;
@@ -118,9 +149,10 @@ class EditQuestionContainer extends Component {
 
     return (
       <EditQuestion
-        changeQuestion={question => this.setState({ question })}
-        changeAnswer={answer => this.setState({ answer })}
+        changeQuestion={question => this.updateData({ question })}
+        changeAnswer={answer => this.updateData({ answer })}
         save={this.save}
+        validationMessage={this.state.validationMessage}
       />
     );
   }
