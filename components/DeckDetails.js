@@ -142,7 +142,6 @@ class DeckDetailsContainer extends Component {
 function mapStateToProps(state, props) {
   const deckId = props.navigation.state.params.deck.id;
   return {
-    ...props,
     deck: state.decks[deckId],
   }
 }

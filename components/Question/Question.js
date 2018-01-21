@@ -176,7 +176,6 @@ function mapStateToProps(state, props) {
   const deckId = props.navigation.state.params.deck.id;
   const deck = state.decks[deckId];
   return {
-    ...props,
     deck: deck,
     questions: deck && shuffle(deck.questions),
   }
