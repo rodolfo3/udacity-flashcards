@@ -107,8 +107,14 @@ class QuestionContainer extends Component {
     answer: null,
   }
 
+  updateNotification = () => {
+    if (this.state.questionIndex >= this.props.questions.length) {
+      updateLocalNotification();
+    }
+  }
+
   next = () => {
-    this.setState(state => ({ questionIndex: state.questionIndex + 1 }));
+    this.setState(state => ({ questionIndex: state.questionIndex + 1 }), this.updateNotification);
   }
 
   setCorrect = () => {
@@ -127,13 +133,27 @@ class QuestionContainer extends Component {
     this.setState({ answer: question.answer });
   }
 
-  goHome = () => {
-    updateLocalNotification();
+  backToDeck = () => {
     return this.props.navigation.dispatch(
       NavigationActions.navigate({
-        routeName: 'Home',
+        routeName: 'DeckDetail',
+        params: {
+          deck: {
+            id: this.props.deck.id,
+            title: this.props.deck.title,
+          }
+        }
       })
     )
+  }
+
+  restart = () => {
+    this.setState({
+      questionIndex: 0,
+      correctCounter: 0,
+      incorrectCounter: 0,
+      answer: null,
+    });
   }
 
   render() {
@@ -149,7 +169,8 @@ class QuestionContainer extends Component {
         <Ended
           incorrect={this.state.incorrectCounter}
           correct={this.state.correctCounter}
-          continue_={this.goHome}
+          back={this.backToDeck}
+          restart={this.restart}
         />
       );
     }

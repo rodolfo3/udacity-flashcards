@@ -51,7 +51,7 @@ const isGoodGrade = (correct, incorrect) => {
 };
 
 
-const Ended = ({ incorrect, correct, continue_ }) => (
+const Ended = ({ incorrect, correct, back, restart }) => (
   <View style={style.wrapper}>
     <Text style={style.message}>That's it</Text>
     <Text
@@ -59,9 +59,14 @@ const Ended = ({ incorrect, correct, continue_ }) => (
     >
       { correct }/{ incorrect + correct }
     </Text>
-    <TouchableHighlight onPress={continue_}>
-      <Text>
-        Continue
+    <TouchableHighlight onPress={back} style={style.button}>
+      <Text style={style.buttonText}>
+        Back to Deck
+      </Text>
+    </TouchableHighlight>
+    <TouchableHighlight onPress={restart} style={style.button}>
+      <Text style={style.buttonText}>
+        Restart Quiz
       </Text>
     </TouchableHighlight>
   </View>
