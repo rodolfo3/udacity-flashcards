@@ -13,18 +13,9 @@ function decks(state = null, action) {
       };
 
     case REMOVE_DECK:
-      return Object.keys(state || {}).reduce(
-        (acc, idx) => {
-          if (idx == action.deck.id) {
-            return acc;
-          }
-          return {
-            ...acc,
-            [idx]: state[idx],
-          }
-        },
-        {}
-      );
+      const newState = {...state};
+      delete newState[action.deck.id];
+      return newState;
 
     case ADD_CARD:
       const deck = state[action.deckId];
