@@ -95,8 +95,18 @@ class EditDeckContainer extends Component {
     validationMessage: null,
   }
 
-  back = () => {
-    return this.props.navigation.dispatch(NavigationActions.back())
+  goToDeck = (deck) => {
+    return this.props.navigation.dispatch(
+      NavigationActions.navigate({
+        routeName: 'DeckDetail',
+        params: {
+          deck: {
+            id: deck.id,
+            title: deck.title,
+          }
+        },
+      })
+    )
   }
 
   save = () => {
@@ -109,8 +119,8 @@ class EditDeckContainer extends Component {
 
     this.setState({ saving: true });
     const act = this.props.dispatch(addDeck({ title }))
-    act.then(() => {
-      this.back();
+    act.then((deck) => {
+      this.goToDeck(deck);
       this.setState({
         saving: false,
         title: "",

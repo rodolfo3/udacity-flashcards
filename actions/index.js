@@ -35,7 +35,7 @@ export function addDeck({ title }) {
       type: ADD_DECK,
       deck,
     });
-    return save(getState());
+    return save(getState()).then(() => deck);
   }
 }
 
