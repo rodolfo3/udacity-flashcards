@@ -6,7 +6,7 @@ const DATA_KEY = 'Flashcards:data';
 
 const EXAMPLE = {
   'mock-questions': {
-    id: 'mock-question',
+    id: 'mock-questions',
     title: 'React',
     questions: [
       {
