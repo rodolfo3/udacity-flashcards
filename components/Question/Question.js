@@ -114,7 +114,7 @@ class QuestionContainer extends Component {
   }
 
   next = () => {
-    this.setState(state => ({ questionIndex: state.questionIndex + 1 }), this.updateNotification);
+    this.setState(state => ({ answer: null, questionIndex: state.questionIndex + 1 }), this.updateNotification);
   }
 
   setCorrect = () => {
